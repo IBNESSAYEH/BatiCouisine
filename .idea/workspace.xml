@@ -1,12 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="7c5d91d9-179c-49d1-9412-1547d60288be" name="Changes" comment="" />
+    <list default="true" id="7c5d91d9-179c-49d1-9412-1547d60288be" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/controller/ClientController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/controller/DevisController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/controller/ProjectController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/entities/ClientModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/entities/ComposantModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/entities/DevisModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/entities/MainDoeuvreModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/entities/MateriauModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/entities/ProjectModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/repository/ClientRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/repository/DevisRepositry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/repository/MainDoeuvre.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/repository/MateriauRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/repository/ProjectRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/repository/implementation/ClientRepositoryImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/repository/implementation/DevisRepositoryImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/repository/implementation/MainDoeuvreRepositoryImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/repository/implementation/MateriauRepositoryImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/repository/implementation/ProjectRepositoryImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/service/ClientService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/service/DevisService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/service/Implementation/ClientServiceImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/service/Implementation/DevisServiceImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/service/Implementation/MainDoeuvreServiceImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/service/Implementation/MateriauServiceImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/service/Implementation/ProjectServiceImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/service/MainDoeuvreService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/service/MateriauService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/service/ProjectService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/BatiCouisine/Main.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="ProjectColorInfo"><![CDATA[{
   "associatedIndex": 7
 }]]></component>
@@ -19,11 +70,28 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "develop",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "onboarding.tips.debug.path": "C:/Users/Youcode/IdeaProjects/BatiCuisine/src/Main.java",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ]
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Youcode\IdeaProjects\BatiCuisine\src\com\BatiCouisine\controller" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -40,19 +108,49 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1726512257074</updated>
-      <workItem from="1726512258167" duration="1000" />
+      <workItem from="1726512258167" duration="5114000" />
     </task>
     <servers />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Main.java</url>
-          <line>11</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="develop" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="develop" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
