@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7c5d91d9-179c-49d1-9412-1547d60288be" name="Changes" comment="git commit &quot;Rename and implement entities; add ProjectEnum with implementation&#10;            &#10;            - Renamed entities to follow naming conventions&#10;            - Implemented entity classes with initial fields and methods&#10;            - Added ProjectEnum to represent project statuses&#10;            - Implemented ProjectEnum with necessary methods&#10;            &#10;            This commit refactors the entity names, completes the implementation of the entity classes, and introduces the ProjectEnum to handle project statuses. The implementation of ProjectEnum includes methods to manage and utilize the enum values effectively&quot;">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/postgresql_42_7_4.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/util/DBConnection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/BatiCouisine/util/DBUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BatiCuisine.iml" beforeDir="false" afterPath="$PROJECT_DIR$/BatiCuisine.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/BatiCouisine/entities/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/BatiCouisine/entities/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/BatiCouisine/repository/implementation/ClientRepositoryImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/BatiCouisine/repository/implementation/ClientRepositoryImp.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -46,7 +41,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "DBConnection",
+    "git-widget-placeholder": "repositries",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Youcode/Downloads/maven-common-artifact-filters-3.0.1.jar",
     "node.js.detected.package.eslint": "true",
