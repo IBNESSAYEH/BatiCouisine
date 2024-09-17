@@ -49,7 +49,7 @@ public class Client {
         this.address = address;
     }
 
-    public boolean isEstProfessionnelle() {
+    public boolean isProfessionnel() {
         return estProfessionnelle;
     }
 
