@@ -3,12 +3,13 @@ package com.BatiCouisine.service.Implementation;
 import com.BatiCouisine.entities.Client;
 import com.BatiCouisine.entities.Devis;
 import com.BatiCouisine.repository.implementation.DevisRepositoryImp;
+import com.BatiCouisine.service.DevisService;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-public class DevisServiceImp {
+public class DevisServiceImp implements DevisService {
     private DevisRepositoryImp devisRepository;
 
     public DevisServiceImp(DevisRepositoryImp devisRepository) {
