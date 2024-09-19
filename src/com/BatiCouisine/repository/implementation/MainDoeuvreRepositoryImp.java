@@ -53,7 +53,7 @@ public class MainDoeuvreRepositoryImp implements MainDoeuvreRepository {
     };
 
     public Optional<MainDoeuvre> findById(int id){
-        String sqlQuery = "SELECT * FROM maindoeuvre WHERE id_projet = ?";
+        String sqlQuery = "SELECT * FROM maindoeuvre WHERE id = ?";
         PreparedStatement pStatement = null;
         ResultSet resultSet = null;
         Optional<MainDoeuvre> mainDoeuvreOptional = Optional.empty();

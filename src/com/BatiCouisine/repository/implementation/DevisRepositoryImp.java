@@ -6,6 +6,7 @@ import com.BatiCouisine.util.DBConnection;
 import com.BatiCouisine.util.DBUtils;
 
 import java.sql.*;
+import java.util.List;
 import java.util.Optional;
 
 public class DevisRepositoryImp implements DevisRepositry {
@@ -44,11 +45,11 @@ public class DevisRepositoryImp implements DevisRepositry {
 
     };
 
-//    public List<Devis> retrieveAllClients(){
+//    public List<Devis> retrieveAllDevis(){
 //
 //    };
     public Optional<Devis> findById(int id){
-        String sqlQuery = "SELECT * FROM devis WHERE id_projet = ?";
+        String sqlQuery = "SELECT * FROM devis WHERE id = ?";
         PreparedStatement pStatement = null;
         ResultSet resultSet = null;
         Optional<Devis> devisOptional = Optional.empty();

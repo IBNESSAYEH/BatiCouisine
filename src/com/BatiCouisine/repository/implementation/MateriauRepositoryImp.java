@@ -51,14 +51,76 @@ public class MateriauRepositoryImp {
     };
 
     public Optional<Materiau> findById(int id){
+        String sqlQuery = "SELECT * FROM Materiau WHERE id = ?";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Optional<Materiau> materiauOptional = Optional.empty();
+        try{
+            preparedStatement = connection.prepareStatement(sqlQuery);
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                Materiau materiau = new Materiau();
+                materiau.setId(id);
+                materiau.setNom(resultSet.getString("nom"));
+                materiau.setTypeComposant(resultSet.getString("typeComposant"));
+                materiau.setTauxTVA(resultSet.getDouble("taux_tva"));
+                materiau.setCoutUnitaire(resultSet.getDouble("coutunitaire"));
+                materiau.setQuantite(resultSet.getDouble("quantite"));
+                materiau.setCoefficientQualite(resultSet.getDouble("coefficientqualite"));
+                materiau.setCoutTransport(resultSet.getDouble("couttransport"));
+                materiauOptional = Optional.ofNullable(materiau);
+            }else{
+                System.out.println("aucun materiau trouver avec cette id.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtils.closeResources(resultSet, preparedStatement);
+        }
 
+        return materiauOptional;
     };
 
     public void update(int id, Materiau materiau){
-
+        String sqlQuery = "UPDATE materiau SET nom = ?, typeComposant = ?, taux_tva = ?, coutunitaire = ?, quantite = ?, couttransport = ?, coefficientqualite = ? WHERE id = ?";
+        PreparedStatement preparedStatement = null;
+        try{
+            preparedStatement = connection.prepareStatement(sqlQuery);
+            preparedStatement.setString(1, materiau.getNom());
+            preparedStatement.setString(2, materiau.getTypeComposant());
+            preparedStatement.setDouble(3, materiau.getTauxTVA());
+            preparedStatement.setDouble(4, materiau.getCoutUnitaire());
+            preparedStatement.setDouble(5, materiau.getQuantite());
+            preparedStatement.setDouble(6, materiau.getCoutTransport());
+            preparedStatement.setDouble(7, materiau.getCoefficientQualite());
+            preparedStatement.setInt(8, id);
+            int affectedRow = preparedStatement.executeUpdate();
+            if(affectedRow == 0){
+                throw new SQLException("Erreur pendant l'update materiau .");
+            }else{
+                System.out.println("l'insetion effectuer avec succes");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     };
 
     public void destroy(int id){
+        String sqlQuery = "DELETE FROM Materiau WHERE id = ?";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(sqlQuery);
+            preparedStatement.setInt(1, id);
+            int affectedRow = preparedStatement.executeUpdate();
+            if(affectedRow == 0){
+                System.out.println("Erreur : le materiau n'etatis pas se supprimer ;");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtils.closeResources(preparedStatement);
+        }
 
     };
 

@@ -7,6 +7,7 @@ import com.BatiCouisine.util.DBUtils;
 
 import java.sql.*;
 import java.util.HashMap;
+import java.util.Optional;
 
 public class ClientRepositoryImp implements ClientRepository {
     private Connection dbConnection;
@@ -75,6 +76,35 @@ public class ClientRepositoryImp implements ClientRepository {
             DBUtils.closeResources(resultSet, pStatement);
         }
         return clientHashMap;
+    }
+
+    public Optional<Client> findById(int id) {
+        String sqlQuery = "SELECT * FROM client WHERE id = ?";
+        PreparedStatement pStatement = null;
+        ResultSet resultSet = null;
+       Optional<Client> clientOptional = Optional.empty();
+        try{
+            pStatement = dbConnection.prepareStatement(sqlQuery);
+            pStatement.setInt(1, id);
+            resultSet = pStatement.executeQuery();
+            Client client = new Client();
+            if(resultSet.next()){
+                client.setId(id);
+                client.setNom(resultSet.getString("nom"));
+                client.setAddress(resultSet.getString("address"));
+                client.setEstProfessionnelle(resultSet.getBoolean("estprofessionnel"));
+                client.setNumeroTelephone(resultSet.getString("telephone"));
+            }else{
+                System.out.println("aucun client trouver avec cette id.");
+            }
+        } catch (SQLException e) {
+            System.err.println("erreur pendant l'execution du query : " + e.getMessage() + " le client n'est pas recuperer verifier la connexion avec la base dedonnee." );
+            e.printStackTrace();
+        }finally {
+            DBUtils.closeResources(resultSet, pStatement);
+
+        }
+        return clientOptional;
     }
 
     public void update(int id, Client client) {
