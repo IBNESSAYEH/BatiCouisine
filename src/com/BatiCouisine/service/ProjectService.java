@@ -1,4 +1,4 @@
 package com.BatiCouisine.service;
 
-interface ProjectService {
+public interface ProjectService {
 }
