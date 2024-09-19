@@ -1,13 +1,19 @@
 package com.BatiCouisine.entities;
 
-public class Materiau {
+public class Materiau extends Composant {
 
     private double coutTransport;
     private double coefficientQualite;
     private double quantite;
     private double CoutUnitaire;
 
-    public Materiau() {}
+    public Materiau(int id, String nom, String typeComposant, Double tauxTVA, double coutTransport, double coefficientQualite, double quantite, double coutUnitaire) {
+        super(id, nom, typeComposant, tauxTVA);
+        this.coutTransport = coutTransport;
+        this.coefficientQualite = coefficientQualite;
+        this.quantite = quantite;
+        CoutUnitaire = coutUnitaire;
+    }
 
     public double getCoutTransport() {
         return coutTransport;

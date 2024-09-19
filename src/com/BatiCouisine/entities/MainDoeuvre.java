@@ -1,14 +1,15 @@
 package com.BatiCouisine.entities;
 
-public class MainDoeuvre {
+public class MainDoeuvre extends Composant {
 
     private double tauxHoraire;
     private double heurTravail;
     private double productiviteOuvrier;
 
-    public MainDoeuvre() {}
 
-    public MainDoeuvre(double tauxHoraire, double heurTravail, double productiviteOuvrier) {
+public MainDoeuvre() {}
+    public MainDoeuvre(int id, String nom, String typeComposant, Double tauxTVA, double tauxHoraire, double heurTravail, double productiviteOuvrier) {
+        super(id, nom, typeComposant, tauxTVA);
         this.tauxHoraire = tauxHoraire;
         this.heurTravail = heurTravail;
         this.productiviteOuvrier = productiviteOuvrier;
