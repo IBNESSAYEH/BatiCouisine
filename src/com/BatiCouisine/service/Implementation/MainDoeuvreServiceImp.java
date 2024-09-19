@@ -2,10 +2,11 @@ package com.BatiCouisine.service.Implementation;
 
 import com.BatiCouisine.entities.MainDoeuvre;
 import com.BatiCouisine.repository.MainDoeuvreRepository;
+import com.BatiCouisine.service.MainDoeuvreService;
 
 import java.util.Optional;
 
-public class MainDoeuvreServiceImp {
+public class MainDoeuvreServiceImp implements MainDoeuvreService {
     private MainDoeuvreRepository mainDoeuvreRepository;
 
     public MainDoeuvreServiceImp(MainDoeuvreRepository mainDoeuvreRepository) {
