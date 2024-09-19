@@ -1,6 +1,6 @@
 package com.BatiCouisine.entities;
 
-public class Project {
+public class Projet {
     private int id;
     private String nom;
     private double margeBeneficiaire;
@@ -8,9 +8,9 @@ public class Project {
     private EtatProject etat;
     private double surfaceCouisine;
 
-    public Project() {}
+    public Projet() {}
 
-    public Project(int id, String nom, double margeBeneficiaire, double coutTotal, EtatProject etat, double surfaceCouisine) {
+    public Projet(int id, String nom, double margeBeneficiaire, double coutTotal, EtatProject etat, double surfaceCouisine) {
         this.id = id;
         this.nom = nom;
         this.margeBeneficiaire = margeBeneficiaire;
