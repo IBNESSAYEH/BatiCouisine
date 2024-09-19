@@ -48,7 +48,7 @@ public class DevisRepositoryImp implements DevisRepositry {
 //
 //    };
     public Optional<Devis> findById(int id){
-        String sqlQuery = "SELECT * FROM devis WHERE id_projet = ?";
+        String sqlQuery = "SELECT * FROM devis WHERE id = ?";
         PreparedStatement pStatement = null;
         ResultSet resultSet = null;
         Optional<Devis> devisOptional = Optional.empty();
