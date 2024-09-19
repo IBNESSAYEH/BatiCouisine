@@ -6,6 +6,7 @@ public class Composant {
     private String typeComposant;
     private Double tauxTVA;
 
+    public Composant() {}
     public Composant(int id, String nom, String typeComposant, Double tauxTVA) {
         this.id = id;
         this.nom = nom;

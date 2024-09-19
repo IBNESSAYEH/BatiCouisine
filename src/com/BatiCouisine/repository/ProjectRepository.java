@@ -1,4 +1,4 @@
 package com.BatiCouisine.repository;
 
-public class ProjectRepository {
+public interface ProjectRepository {
 }

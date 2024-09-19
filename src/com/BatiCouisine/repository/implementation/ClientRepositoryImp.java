@@ -1,23 +1,25 @@
 package com.BatiCouisine.repository.implementation;
 
 import com.BatiCouisine.entities.Client;
+import com.BatiCouisine.repository.ClientRepository;
 import com.BatiCouisine.util.DBConnection;
 import com.BatiCouisine.util.DBUtils;
 
 import java.sql.*;
 import java.util.HashMap;
 
-public class ClientRepositoryImp {
+public class ClientRepositoryImp implements ClientRepository {
     private Connection dbConnection;
 
     public ClientRepositoryImp() {
         this.dbConnection = DBConnection.getConnectionInstance().getConnection();
     }
 
-    public void store(Client client) {
+    public int store(Client client) {
         String sqlQuery = "INSERT INTO client (nom, estprofessionnel, telephone, address) values (?, ?, ?, ?)";
         PreparedStatement pStatement = null;
         ResultSet generatedKeys = null;
+        int generatedId = 0;
         try{
             pStatement = dbConnection.prepareStatement(sqlQuery, pStatement.RETURN_GENERATED_KEYS);
             pStatement.setString(1,client.getNom());
@@ -26,9 +28,16 @@ public class ClientRepositoryImp {
             pStatement.setString(4, client.getAddress());
             int affectedRow = pStatement.executeUpdate();
             if(affectedRow == 0){
-                throw new SQLException();
+                throw new SQLException("Erreur : pendant la creation du client");
             }
-            generatedKeys = pStatement.getGeneratedKeys();
+            if(generatedKeys.next()){
+                generatedKeys = pStatement.getGeneratedKeys();
+                generatedId = generatedKeys.getInt(1);
+                client.setId(generatedId);
+            }else{
+                throw new SQLException("Erreur : pendant la creation du client");
+            }
+
             System.out.println("le client : " + client.getNom() + " est creer avec succes");
         } catch (SQLException e) {
             System.err.println("erreur pendant l'execution du query : " + e.getMessage() + " verifier la connexion avec la base dedonnee." );
@@ -36,6 +45,8 @@ public class ClientRepositoryImp {
         }finally {
             DBUtils.closeResources(generatedKeys, pStatement);
         }
+
+        return generatedId;
     }
 
     public HashMap<String, Client> retrieveAllClients() {
@@ -75,7 +86,10 @@ public class ClientRepositoryImp {
             pStatement.setBoolean(2, client.isProfessionnel());
             pStatement.setString(3, client.getNumeroTelephone());
             pStatement.setString(4, client.getAddress());
-            pStatement.executeUpdate();
+            int affectedRow = pStatement.executeUpdate();
+            if(affectedRow == 0){
+                throw new SQLException("Error : the client was not updated;");
+            }
             System.out.println("le client identifier par l id : " + id + " est modifier avec succes");
         } catch (SQLException e) {
             System.err.println("erreur pendant l'execution du query : " + e.getMessage() + " le client n'est modifier verifier la connexion avec la base dedonnee." );
@@ -92,8 +106,11 @@ public class ClientRepositoryImp {
         try {
             pStatement = dbConnection.prepareStatement(sqlQuery);
             pStatement.setInt(1, id);
-            pStatement.executeUpdate();
-            System.out.println("le client identifier par l id : " + id + " est supprimer avec succes");
+            int affectedRow = pStatement.executeUpdate();
+            if(affectedRow == 0){
+                System.out.println("Erreur : le client n'etatis pas se supprimer ;");
+            }
+            System.out.println("le client est supprimer avec succes");
         } catch (SQLException e) {
             System.err.println("erreur pendant l'execution du query : " + e.getMessage() + " le client n'est supprimer verifier la connexion avec la base dedonnee." );
             e.printStackTrace();

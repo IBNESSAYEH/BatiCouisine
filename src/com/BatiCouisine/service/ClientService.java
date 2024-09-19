@@ -1,4 +1,4 @@
 package com.BatiCouisine.service;
 
-public class ClientService {
+interface ClientService {
 }
