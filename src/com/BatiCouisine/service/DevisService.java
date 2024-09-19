@@ -1,4 +1,14 @@
 package com.BatiCouisine.service;
 
-interface DevisService {
+import com.BatiCouisine.entities.Devis;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface DevisService {
+    boolean store(Devis devis, int idClient);
+    Optional<Devis> findById(int id);
+    boolean update(int id, Devis devis);
+    boolean destroy(int id);
+    //List<Devis> findAll();
 }

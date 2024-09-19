@@ -127,7 +127,7 @@ public class ProjectRepositoryImp implements ProjectRepository {
     }
 
 
-    public List<Projet> retrieveAllProjects() {
+    public List<Projet> retrieveAll() {
         String sqlQuery = "SELECT * FROM project";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;

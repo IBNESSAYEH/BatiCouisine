@@ -1,4 +1,15 @@
 package com.BatiCouisine.service;
 
-interface MainDoeuvreService {
+import com.BatiCouisine.entities.MainDoeuvre;
+
+import java.util.Optional;
+
+public interface MainDoeuvreService {
+
+    boolean store(MainDoeuvre mainDoeuvre, int idProjt);
+    boolean update(int id, MainDoeuvre mainDoeuvre);
+    boolean destroy(int id);
+    Optional<MainDoeuvre> findById(int id);
+    //List<MainDoeuvre> findAll();
+    
 }

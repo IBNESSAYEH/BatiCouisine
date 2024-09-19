@@ -50,7 +50,7 @@ public class ClientRepositoryImp implements ClientRepository {
         return generatedId;
     }
 
-    public HashMap<String, Client> retrieveAllClients() {
+    public HashMap<String, Client> retrieveAll() {
         String sqlQuery = "SELECT * FROM client";
         PreparedStatement pStatement = null;
         ResultSet resultSet = null;

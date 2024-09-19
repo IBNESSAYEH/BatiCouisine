@@ -10,5 +10,5 @@ public interface ProjectRepository {
     Optional<Projet> findById(int id);
     void update(int id, Projet projet);
     void destroy(int id);
-    List<Projet> retrieveAllProjects();
+    List<Projet> retrieveAll();
 }
