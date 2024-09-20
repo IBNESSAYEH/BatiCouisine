@@ -7,6 +7,8 @@ import com.BatiCouisine.repository.MateriauRepository;
 import com.BatiCouisine.service.MainDoeuvreService;
 import com.BatiCouisine.service.MateriauService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class MateriauServiceImp implements MateriauService {
@@ -61,5 +63,13 @@ public class MateriauServiceImp implements MateriauService {
         }
     }
 
+    public List<Materiau> findAll() {
+        try {
+            return materiauRepository.findAll();
+        } catch (Exception e) {
+            System.err.println("Erreur lors de la recherche du main d'oeuvre: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
 
 }
