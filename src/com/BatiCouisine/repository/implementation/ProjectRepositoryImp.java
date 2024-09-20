@@ -9,6 +9,7 @@ import com.BatiCouisine.util.DBUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -127,11 +128,11 @@ public class ProjectRepositoryImp implements ProjectRepository {
     }
 
 
-    public List<Projet> retrieveAll() {
+    public HashMap<String, Projet> retrieveAll() {
         String sqlQuery = "SELECT * FROM project";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        List<Projet> projects = null;
+        HashMap<String, Projet> projects = new HashMap<>();
         try {
             preparedStatement = connection.prepareStatement(sqlQuery);
             resultSet = preparedStatement.executeQuery();
@@ -143,7 +144,7 @@ public class ProjectRepositoryImp implements ProjectRepository {
                 project.setCoutTotal(resultSet.getDouble("couttotal"));
                 project.setEtat(EtatProject.valueOf(resultSet.getString("etat")));
                 project.setSurfaceCouisine(resultSet.getDouble("surfacecouisine"));
-                projects.add(project);
+                projects.put(resultSet.getString("nom"), project);
             }
         } catch (Exception e) {
             e.printStackTrace();
