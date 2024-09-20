@@ -8,6 +8,7 @@ import com.BatiCouisine.util.DBUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.Optional;
 
 public class MainDoeuvreRepositoryImp implements MainDoeuvreRepository {
@@ -126,4 +127,31 @@ public class MainDoeuvreRepositoryImp implements MainDoeuvreRepository {
             DBUtils.closeResources(pStatement);
         }
     };
+
+    public List<MainDoeuvre> findAll(){
+        String sqlQuery = "SELECT * FROM maindoeuvre";
+        PreparedStatement pStatement = null;
+        ResultSet resultSet = null;
+        List<MainDoeuvre> mainDoeuvreList = null;
+        try{
+            pStatement = connection.prepareStatement(sqlQuery);
+            resultSet = pStatement.executeQuery();
+            while(resultSet.next()){
+                MainDoeuvre mainDoeuvre = new MainDoeuvre();
+                mainDoeuvre.setId(resultSet.getInt("id"));
+                mainDoeuvre.setNom(resultSet.getString("nom"));
+                mainDoeuvre.setTypeComposant(resultSet.getString("typecomposant"));
+                mainDoeuvre.setTauxTVA(resultSet.getDouble("tauxTVA"));
+                mainDoeuvre.setTauxHoraire(resultSet.getDouble("tauxHoraire"));
+                mainDoeuvre.setHeurTravail(resultSet.getDouble("heurestravail"));
+                mainDoeuvre.setProductiviteOuvrier(resultSet.getDouble("productiviteouvrier"));
+                mainDoeuvreList.add(mainDoeuvre);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            DBUtils.closeResources(resultSet, pStatement);
+        }
+        return mainDoeuvreList;
+    }
 }

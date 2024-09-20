@@ -4,6 +4,8 @@ import com.BatiCouisine.entities.MainDoeuvre;
 import com.BatiCouisine.repository.MainDoeuvreRepository;
 import com.BatiCouisine.service.MainDoeuvreService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class MainDoeuvreServiceImp implements MainDoeuvreService {
@@ -60,6 +62,13 @@ public class MainDoeuvreServiceImp implements MainDoeuvreService {
         }
     }
 
-    //public List<MainDoeuvre> findAll() {
+    public List<MainDoeuvre> findAll() {
+        try {
+            return mainDoeuvreRepository.findAll();
+        } catch (Exception e) {
+            System.err.println("Erreur lors de la recherche des main d'oeuvre: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
 
 }

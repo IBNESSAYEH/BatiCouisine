@@ -4,7 +4,9 @@ import com.BatiCouisine.entities.Client;
 import com.BatiCouisine.entities.Devis;
 import com.BatiCouisine.repository.implementation.DevisRepositoryImp;
 import com.BatiCouisine.service.DevisService;
+import com.BatiCouisine.util.DBUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -64,7 +66,15 @@ public class DevisServiceImp implements DevisService {
         return Optional.empty();
     }
 
+    public List<Devis> findAll() {
+        try {
+            return devisRepository.retrieveAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        return new ArrayList<>();
+        }
 
 
 
