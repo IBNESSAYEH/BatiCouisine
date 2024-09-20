@@ -1,24 +1,27 @@
 package com.BatiCouisine.service.Implementation;
 
 import com.BatiCouisine.entities.MainDoeuvre;
+import com.BatiCouisine.entities.Materiau;
 import com.BatiCouisine.repository.MainDoeuvreRepository;
+import com.BatiCouisine.repository.MateriauRepository;
 import com.BatiCouisine.service.MainDoeuvreService;
+import com.BatiCouisine.service.MateriauService;
 
 import java.util.Optional;
 
-public class MateriauServiceImp implements MainDoeuvreService {
-    private MainDoeuvreRepository mainDoeuvreRepository;
+public class MateriauServiceImp implements MateriauService {
+    private MateriauRepository materiauRepository;
 
-    public MateriauServiceImp(MainDoeuvreRepository mainDoeuvreRepository) {
-        this.mainDoeuvreRepository = mainDoeuvreRepository;
+    public MateriauServiceImp(MateriauRepository materiauRepository) {
+        this.materiauRepository = materiauRepository;
     }
 
-    public boolean store(MainDoeuvre mainDoeuvre, int idProjt) {
-        if (mainDoeuvre == null) {
+    public boolean store(Materiau materiau, int idProjt) {
+        if (materiau == null) {
             throw new IllegalArgumentException("MainDoeuvre est null");
         }
         try {
-            mainDoeuvreRepository.store(mainDoeuvre, idProjt);
+            materiauRepository.store(materiau, idProjt);
             return true;
         } catch (Exception e) {
             System.err.println("Erreur pendant la creation du Main d'oeuvre: " + e.getMessage());
@@ -26,12 +29,12 @@ public class MateriauServiceImp implements MainDoeuvreService {
         }
     }
 
-    public boolean update(int id, MainDoeuvre mainDoeuvre) {
-        if (mainDoeuvre == null) {
+    public boolean update(int id, Materiau materiau) {
+        if (materiau == null) {
             throw new IllegalArgumentException("MainDoeuvre est null");
         }
         try {
-            mainDoeuvreRepository.update(id, mainDoeuvre);
+            materiauRepository.update(id, materiau);
             return true;
         } catch (Exception e) {
             System.err.println("Error pendant la modification du main d'oeuvre: " + e.getMessage());
@@ -41,7 +44,7 @@ public class MateriauServiceImp implements MainDoeuvreService {
 
     public boolean destroy(int id) {
         try {
-            mainDoeuvreRepository.destroy(id);
+            materiauRepository.destroy(id);
             return true;
         } catch (Exception e) {
             System.err.println("Erreur lors de la suppression du main d'oeuvre: " + e.getMessage());
@@ -49,9 +52,9 @@ public class MateriauServiceImp implements MainDoeuvreService {
         }
     }
 
-    public Optional<MainDoeuvre> findById(int id) {
+    public Optional<Materiau> findById(int id) {
         try {
-            return mainDoeuvreRepository.findById(id);
+            return materiauRepository.findById(id);
         } catch (Exception e) {
             System.err.println("Erreur lors de la recherche du main d'oeuvre: " + e.getMessage());
             return Optional.empty();

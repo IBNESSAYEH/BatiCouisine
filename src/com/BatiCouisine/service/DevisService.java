@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DevisService {
-    boolean store(Devis devis, int idClient);
+    boolean store(Devis devis, int idProject);
     Optional<Devis> findById(int id);
     boolean update(int id, Devis devis);
     boolean destroy(int id);
