@@ -94,6 +94,8 @@ public class ClientRepositoryImp implements ClientRepository {
                 client.setAddress(resultSet.getString("address"));
                 client.setEstProfessionnelle(resultSet.getBoolean("estprofessionnel"));
                 client.setNumeroTelephone(resultSet.getString("telephone"));
+                clientOptional = Optional.ofNullable(client);
+
             }else{
                 System.out.println("aucun client trouver avec cette id.");
             }
