@@ -45,9 +45,30 @@ public class DevisRepositoryImp implements DevisRepositry {
 
     };
 
-//    public List<Devis> retrieveAllDevis(){
-//
-//    };
+    public List<Devis> retrieveAll(){
+        String sqlQuery = "SELECT * FROM devis";
+        PreparedStatement pStatement = null;
+        ResultSet resultSet = null;
+        List<Devis> devisList = null;
+        try{
+            pStatement = dbConnection.prepareStatement(sqlQuery);
+            resultSet = pStatement.executeQuery();
+            while(resultSet.next()){
+                Devis devis = new Devis();
+                devis.setId(resultSet.getInt("id"));
+                devis.setMontantEstime(resultSet.getDouble("montantestime"));
+                devis.setDateMission(resultSet.getDate("dateemission"));
+                devis.setDateValidite(resultSet.getDate("datevalidite"));
+                devis.setAccepted(resultSet.getBoolean("isaccept"));
+                devisList.add(devis);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtils.closeResources(resultSet, pStatement);
+        }
+        return devisList;
+    };
     public Optional<Devis> findById(int id){
         String sqlQuery = "SELECT * FROM devis WHERE id = ?";
         PreparedStatement pStatement = null;

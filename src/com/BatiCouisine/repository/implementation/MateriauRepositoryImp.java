@@ -1,6 +1,7 @@
 package com.BatiCouisine.repository.implementation;
 
 import com.BatiCouisine.entities.Materiau;
+import com.BatiCouisine.repository.MateriauRepository;
 import com.BatiCouisine.util.DBConnection;
 import com.BatiCouisine.util.DBUtils;
 
@@ -8,9 +9,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
-public class MateriauRepositoryImp {
+public class MateriauRepositoryImp implements MateriauRepository {
     private Connection connection;
 
     public MateriauRepositoryImp() {
@@ -123,5 +125,34 @@ public class MateriauRepositoryImp {
         }
 
     };
+
+    public List<Materiau> findAll(){
+        String sqlQuery = "SELECT * from materiau;";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<Materiau> materiauList = null;
+        try{
+            preparedStatement = connection.prepareStatement(sqlQuery);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                Materiau materiau = new Materiau();
+                materiau.setId(resultSet.getInt("id"));
+                materiau.setNom(resultSet.getString("nom"));
+                materiau.setTypeComposant(resultSet.getString("typeComposant"));
+                materiau.setTauxTVA(resultSet.getDouble("taux_tva"));
+                materiau.setCoutUnitaire(resultSet.getDouble("coutunitaire"));
+                materiau.setQuantite(resultSet.getDouble("quantite"));
+                materiau.setCoutTransport(resultSet.getDouble("couttransport"));
+                materiau.setCoefficientQualite(resultSet.getDouble("coefficientqualite"));
+                materiauList.add(materiau);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtils.closeResources(resultSet, preparedStatement);
+        }
+
+        return materiauList;
+    }
 
 }
