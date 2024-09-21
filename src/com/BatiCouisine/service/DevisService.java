@@ -10,5 +10,5 @@ public interface DevisService {
     Optional<Devis> findById(int id);
     boolean update(int id, Devis devis);
     boolean destroy(int id);
-    //List<Devis> findAll();
+    List<Devis> findAll();
 }

@@ -3,6 +3,7 @@ package com.BatiCouisine.service;
 import com.BatiCouisine.entities.MainDoeuvre;
 import com.BatiCouisine.entities.Materiau;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MateriauService {
@@ -11,5 +12,5 @@ public interface MateriauService {
     boolean update(int id, Materiau materiau);
     boolean destroy(int id);
     Optional<Materiau> findById(int id);
-    //List<MainDoeuvre> findAll();
+    List<Materiau> findAll();
 }
