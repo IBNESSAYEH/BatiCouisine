@@ -11,6 +11,6 @@ public interface ClientRepository {
     HashMap<String, Client> retrieveAll();
     void update(int id, Client client);
     void destroy(int id);
-    Optional<Client> findById(int id);
+    Optional<Client> findByName(String nomClient);
 
 }
