@@ -17,38 +17,42 @@ public class ClientRepositoryImp implements ClientRepository {
     }
 
     public int store(Client client) {
-        String sqlQuery = "INSERT INTO client (nom, estprofessionnel, telephone, address) values (?, ?, ?, ?)";
+        String sqlQuery = "INSERT INTO client (nom, estprofessionnel, telephone, adress) values (?, ?, ?, ?)";
         PreparedStatement pStatement = null;
         ResultSet generatedKeys = null;
         int generatedId = 0;
-        try{
-            pStatement = dbConnection.prepareStatement(sqlQuery, pStatement.RETURN_GENERATED_KEYS);
-            pStatement.setString(1,client.getNom());
+
+        try {
+            pStatement = dbConnection.prepareStatement(sqlQuery, PreparedStatement.RETURN_GENERATED_KEYS);
+
+            pStatement.setString(1, client.getNom());
             pStatement.setBoolean(2, client.isProfessionnel());
             pStatement.setString(3, client.getNumeroTelephone());
             pStatement.setString(4, client.getAddress());
-            int affectedRow = pStatement.executeUpdate();
-            if(affectedRow == 0){
-                throw new SQLException("Erreur : pendant la creation du client");
-            }
-            if(generatedKeys.next()){
-                generatedKeys = pStatement.getGeneratedKeys();
-                generatedId = generatedKeys.getInt(1);
-                client.setId(generatedId);
-            }else{
-                throw new SQLException("Erreur : pendant la creation du client");
+
+            int affectedRows = pStatement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Erreur : echec de la creation du client, aucune ligne affectée.");
             }
 
-            System.out.println("le client : " + client.getNom() + " est creer avec succes");
+            generatedKeys = pStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                generatedId = generatedKeys.getInt(1);
+                client.setId(generatedId);
+            } else {
+                throw new SQLException("Erreur : Aucune clé générée pour le client.");
+            }
+            System.out.println("Le client : " + client.getNom() + " a été créé avec succès.");
         } catch (SQLException e) {
-            System.err.println("erreur pendant l'execution du query : " + e.getMessage() + " verifier la connexion avec la base dedonnee." );
+            System.err.println("Erreur pendant l'exécution de la requête : " + e.getMessage());
             e.printStackTrace();
-        }finally {
+        } finally {
             DBUtils.closeResources(generatedKeys, pStatement);
         }
 
         return generatedId;
     }
+
 
     public HashMap<String, Client> retrieveAll() {
         String sqlQuery = "SELECT * FROM client";
@@ -63,7 +67,7 @@ public class ClientRepositoryImp implements ClientRepository {
                 Client client = new Client();
                 client.setId(resultSet.getInt("id"));
                 client.setNom(resultSet.getString("nom"));
-                client.setAddress(resultSet.getString("address"));
+                client.setAddress(resultSet.getString("adress"));
                 client.setEstProfessionnelle(resultSet.getBoolean("estprofessionnel"));
                 client.setNumeroTelephone(resultSet.getString("telephone"));
                 clientHashMap.put(resultSet.getString("nom"), client);
@@ -78,29 +82,29 @@ public class ClientRepositoryImp implements ClientRepository {
         return clientHashMap;
     }
 
-    public Optional<Client> findById(int id) {
-        String sqlQuery = "SELECT * FROM client WHERE id = ?";
+    public Optional<Client> findByName(String nomClient) {
+        String sqlQuery = "SELECT * FROM client WHERE nom = ?";
         PreparedStatement pStatement = null;
         ResultSet resultSet = null;
        Optional<Client> clientOptional = Optional.empty();
         try{
             pStatement = dbConnection.prepareStatement(sqlQuery);
-            pStatement.setInt(1, id);
+            pStatement.setString(1, nomClient);
             resultSet = pStatement.executeQuery();
             Client client = new Client();
             if(resultSet.next()){
-                client.setId(id);
+                client.setId(resultSet.getInt("id"));
                 client.setNom(resultSet.getString("nom"));
-                client.setAddress(resultSet.getString("address"));
+                client.setAddress(resultSet.getString("adress"));
                 client.setEstProfessionnelle(resultSet.getBoolean("estprofessionnel"));
                 client.setNumeroTelephone(resultSet.getString("telephone"));
                 clientOptional = Optional.ofNullable(client);
 
             }else{
-                System.out.println("aucun client trouver avec cette id.");
+                System.out.println("aucun client trouver avec ce nom.");
             }
         } catch (SQLException e) {
-            System.err.println("erreur pendant l'execution du query : " + e.getMessage() + " le client n'est pas recuperer verifier la connexion avec la base dedonnee." );
+            System.err.println("erreur pendant l'execution du query : " + e.getMessage() + " le client n'est pas recuperer." );
             e.printStackTrace();
         }finally {
             DBUtils.closeResources(resultSet, pStatement);
@@ -110,7 +114,7 @@ public class ClientRepositoryImp implements ClientRepository {
     }
 
     public void update(int id, Client client) {
-        String sqlQuery = "UPDATE client SET nom = ?, estprofessionnel = ?, telephone = ?, address = ? WHERE id = ?";
+        String sqlQuery = "UPDATE client SET nom = ?, estprofessionnel = ?, telephone = ?, adress = ? WHERE id = ?";
         PreparedStatement pStatement = null;
         try{
             pStatement = dbConnection.prepareStatement(sqlQuery);

@@ -15,17 +15,16 @@ public class ClientServiceImp implements ClientService {
     }
 
 
-    public boolean store(Client client) {
+    public int store(Client client) {
         if (client == null || client.getNom() == null || client.getNom().isEmpty()) {
             System.out.println("les donnees du client sont invalides");
-            return false;
+            return 0;
         }
         try {
-            clientRepository.store(client);
-            return true;
+            return clientRepository.store(client);
         } catch (Exception e) {
             System.err.println("Error pendant la creation du client: " + e.getMessage());
-            return false;
+            return 0;
         }
     }
 
@@ -55,9 +54,9 @@ public class ClientServiceImp implements ClientService {
     }
 
 
-    public Optional<Client> findById(int id) {
+    public Optional<Client> findByName(String nomClient) {
         try {
-            return clientRepository.findById(id);
+            return clientRepository.findByName(nomClient);
         } catch (Exception e) {
             System.err.println("Erreur pendant la recherche du cloient: " + e.getMessage());
             return Optional.empty();

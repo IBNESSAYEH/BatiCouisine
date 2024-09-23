@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface MainDoeuvreRepository {
 
-    void store(MainDoeuvre mainDoeuvre, int idProjt);
+    int store(MainDoeuvre mainDoeuvre, int idProjt);
     Optional<MainDoeuvre> findById(int id);
     void update(int id, MainDoeuvre mainDoeuvre);
     void destroy(int id);

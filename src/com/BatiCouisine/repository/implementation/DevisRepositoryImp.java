@@ -16,32 +16,36 @@ public class DevisRepositoryImp implements DevisRepositry {
         dbConnection = DBConnection.getConnectionInstance().getConnection();
     }
 
-    public void store(Devis devis, int idProjt){
-        String sqlQuery = "INSERT INTO devis (montantestime, dateemission, datevalidite, isaccept, id_projet) values(?,?,?,?,?)";
+    public void store(Devis devis, int idProjt) {
+        String sqlQuery = "INSERT INTO devis (montantestime, dateemission, datevalidite, isaccepte, id_projet) values(?,?,?,?,?)";
         PreparedStatement pStatement = null;
         ResultSet generatedKeys = null;
-        try{
-            pStatement = dbConnection.prepareStatement(sqlQuery, pStatement.RETURN_GENERATED_KEYS);
+        try {
+            pStatement = dbConnection.prepareStatement(sqlQuery, PreparedStatement.RETURN_GENERATED_KEYS);
             pStatement.setDouble(1, devis.getMontantEstime());
             pStatement.setDate(2, new java.sql.Date(devis.getDateMission().getTime()));
             pStatement.setDate(3, new java.sql.Date(devis.getDateValidite().getTime()));
             pStatement.setBoolean(4, devis.isAccepted());
             pStatement.setInt(5, idProjt);
             int affectedRow = pStatement.executeUpdate();
-            if(affectedRow == 0){
+            if (affectedRow == 0) {
                 throw new SQLException("No rows affected");
             }
+
             generatedKeys = pStatement.getGeneratedKeys();
-            devis.setId(generatedKeys.getInt(1));
-            System.out.println("le devis est creer avec succes");
+            if (generatedKeys.next()) { // Ajout de cette ligne
+                devis.setId(generatedKeys.getInt(1));
+            } else {
+                throw new SQLException("Failed to obtain generated key.");
+            }
+
+            System.out.println("Le devis est créé avec succès");
         } catch (SQLException e) {
-            System.err.println("erreur pendant l'execution du query : " + e.getMessage() + " verifier la connexion avec la base dedonnee." );
+            System.err.println("Erreur pendant l'exécution du query : " + e.getMessage() + " Vérifier la connexion avec la base de données.");
             e.printStackTrace();
-        }finally {
+        } finally {
             DBUtils.closeResources(generatedKeys, pStatement);
         }
-
-
 
     };
 
