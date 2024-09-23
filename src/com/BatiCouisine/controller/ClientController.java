@@ -9,31 +9,32 @@ import java.util.Scanner;
 public class ClientController {
     private ClientService clientService;
 
+
     public ClientController(ClientService clientService) {
         this.clientService = clientService;
     }
 
-    public int index() {
+    public Optional<Client> index() {
         Scanner scanner = new Scanner(System.in);
         int choix;
         int idClient = 0;
-        do{
+
             menu();
             choix = 0;
+        Optional<Client>  OptionalClient = null;
 
             System.out.println("entrer votre choix :");
             choix = scanner.nextInt();
             scanner.nextLine();
             switch (choix) {
                 case 1:{
-                     idClient = findByName();
-                     return idClient;
-
+                    OptionalClient= findByName();
+                    return OptionalClient;
                 }
 
                 case 2:{
-                    idClient =  store(new Client());;
-                   return idClient;
+                    OptionalClient =  store(new Client());
+                   return OptionalClient;
 
                 }
                 default:
@@ -42,7 +43,7 @@ public class ClientController {
             }
 
 
-        }while(true);
+        return OptionalClient;
 
 
 
@@ -56,7 +57,8 @@ public class ClientController {
                             "Veuillez choisir une option: \n");
     }
 
-    public int store(Client client) {
+    public Optional<Client> store(Client client) {
+        Optional<Client>  OptionalClient = Optional.ofNullable(client);
         System.out.println("Entrez le nom du client : ");
         Scanner scanner = new Scanner(System.in);
         String nom = scanner.nextLine();
@@ -72,14 +74,14 @@ public class ClientController {
         client.setEstProfessionnelle(estProfessionnelle);
         int idGenerated = clientService.store(client);
         if(idGenerated != 0){
-            return idGenerated;
+            return OptionalClient;
         }else{
             System.out.println("Erreur lors de la creation du client vuillez creer le client de nouveau.");
-            return 0;
+            return OptionalClient;
         }
     }
 
-    public int findByName() {
+    public Optional<Client> findByName() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Entrez le nom du client : ");
         String nomClient = scanner.nextLine();
@@ -90,9 +92,9 @@ public class ClientController {
             System.out.println("Nom du client : " + clientOptional.get().getNom());
             System.out.println("Numero de telephone : " + clientOptional.get().getNumeroTelephone());
             System.out.println("Adresse : " + clientOptional.get().getAddress());
-            return clientOptional.get().getId();
+            return clientOptional;
         }else{
-            return 0;
+            return clientOptional;
         }
 
     }

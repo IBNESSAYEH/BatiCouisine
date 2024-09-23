@@ -18,7 +18,7 @@ public class MainDoeuvreRepositoryImp implements MainDoeuvreRepository {
         connection = DBConnection.getConnectionInstance().getConnection();
     }
 
-    public void store(MainDoeuvre mainDoeuvre, int idProjt){
+    public int store(MainDoeuvre mainDoeuvre, int idProjt){
         String sqlQuery = "INSERT INTO maindoeuvre (nom, typecomposant, taux_tva, id_projet, tauxhoraire, heurestravail, productiviteouvrier) values (?,?,?,?,?,?,?)";
         PreparedStatement preparedStatement = null;
         ResultSet generatedKey = null;
@@ -50,6 +50,8 @@ public class MainDoeuvreRepositoryImp implements MainDoeuvreRepository {
         }finally{
             DBUtils.closeResources(generatedKey, preparedStatement);
         }
+
+        return mainDoeuvre.getId();
 
     };
 

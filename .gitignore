@@ -1,5 +1,6 @@
-### IntelliJ IDEA ###
+
 out/
+# But track 'out' directories inside 'src/main' and 'src/test'
 !**/src/main/**/out/
 !**/src/test/**/out/
 
@@ -30,4 +31,4 @@ bin/
 
 
 
-.idea/workspace.xml
+/.idea/workspace.xml

@@ -17,17 +17,17 @@ public class ProjectServiceImp implements ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public boolean store(Projet projet, int idClient) {
+    public int store(Projet projet, int idClient) {
         if (projet == null || projet.getNom() == null) {
             System.out.println("les donnees du projet sont invalides");
-            return false;
+            return 0;
         }
         try {
-            projectRepository.store(projet, idClient);
-            return true;
+            return projectRepository.store(projet, idClient);
+
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return 0;
         }
     }
 
