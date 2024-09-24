@@ -2,6 +2,7 @@ package com.BatiCouisine.controller;
 
 import com.BatiCouisine.entities.Client;
 import com.BatiCouisine.service.ClientService;
+import com.BatiCouisine.util.ValidationUtils;
 
 import java.util.Optional;
 import java.util.Scanner;
@@ -24,8 +25,8 @@ public class ClientController {
         Optional<Client>  OptionalClient = null;
 
             System.out.println("entrer votre choix :");
-            choix = scanner.nextInt();
-            scanner.nextLine();
+            choix = ValidationUtils.getValidInput(scanner);
+
             switch (choix) {
                 case 1:{
                     OptionalClient= findByName();

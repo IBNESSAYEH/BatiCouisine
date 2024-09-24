@@ -4,6 +4,7 @@ import com.BatiCouisine.entities.EtatProject;
 import com.BatiCouisine.entities.Projet;
 import com.BatiCouisine.service.ProjectService;
 
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class ProjectController {
@@ -39,8 +40,18 @@ public class ProjectController {
         projectService.destroy(id);
     }
 
-//    public void findAll() {
-//        projectService.findAll();
-//    }
+    public void findAll() {
+        HashMap<String, Projet>  projetHashMap= projectService.retrieveAll();
+        for (Projet projet : projetHashMap.values()) {
+            System.out.println("_________________________________________________________" +
+                    "\nId : " + projet.getId() +
+                    "\nNom : " + projet.getNom() +
+                    "\nMarge bénéficiaire : " + projet.getMargeBeneficiaire() +
+                    "\nCout total : " + projet.getCoutTotal() +
+                    "\nEtat : " + projet.getEtat() +
+                    "\nSurface cuisine : " + projet.getSurfaceCouisine() +
+                    "\n_________________________________________________________");
+        }
+    }
 
 }

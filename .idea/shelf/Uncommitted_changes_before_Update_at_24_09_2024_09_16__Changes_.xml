@@ -1,0 +1,29 @@
+<changelist name="Uncommitted_changes_before_Update_at_24_09_2024_09_16_[Changes]" date="1727165765452" recycled="false" toDelete="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_09_2024_09_16_[Changes]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 24/09/2024 09:16 [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BatiCuisine/com/BatiCouisine/Main.class" />
+    <option name="AFTER_PATH" value="out/production/BatiCuisine/com/BatiCouisine/Main.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_09_2024_09_16_[Changes]/Main.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BatiCuisine/com/BatiCouisine/entities/EtatProject.class" />
+    <option name="AFTER_PATH" value="out/production/BatiCuisine/com/BatiCouisine/entities/EtatProject.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_09_2024_09_16_[Changes]/EtatProject.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BatiCuisine/com/BatiCouisine/repository/implementation/ProjectRepositoryImp.class" />
+    <option name="AFTER_PATH" value="out/production/BatiCuisine/com/BatiCouisine/repository/implementation/ProjectRepositoryImp.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_09_2024_09_16_[Changes]/ProjectRepositoryImp.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BatiCuisine/com/BatiCouisine/controller/ClientController.class" />
+    <option name="AFTER_PATH" value="out/production/BatiCuisine/com/BatiCouisine/controller/ClientController.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_09_2024_09_16_[Changes]/ClientController.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BatiCuisine/com/BatiCouisine/controller/ProjectController.class" />
+    <option name="AFTER_PATH" value="out/production/BatiCuisine/com/BatiCouisine/controller/ProjectController.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_09_2024_09_16_[Changes]/ProjectController.class" />
+  </binary>
+</changelist>

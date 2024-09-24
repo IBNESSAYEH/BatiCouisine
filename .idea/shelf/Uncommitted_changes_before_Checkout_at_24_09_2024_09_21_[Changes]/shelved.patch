@@ -1,0 +1,143 @@
+Index: src/com/BatiCouisine/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.BatiCouisine;\r\n\r\nimport com.BatiCouisine.controller.*;\r\nimport com.BatiCouisine.entities.*;\r\nimport com.BatiCouisine.repository.*;\r\nimport com.BatiCouisine.repository.implementation.*;\r\nimport com.BatiCouisine.service.*;\r\nimport com.BatiCouisine.service.Implementation.*;\r\nimport com.BatiCouisine.util.DBUtils;\r\n\r\nimport java.util.*;\r\n\r\nimport static com.BatiCouisine.util.DBUtils.validateAndGetDate;\r\n\r\npublic class Main {\r\n\r\n    private static Projet projet = new Projet();\r\n    private static MainDoeuvre mainDoeuvre = new MainDoeuvre();\r\n    private static Materiau materiau = new Materiau();\r\n    private static Devis devis = new Devis();\r\n    private static Client client = new Client();\r\n\r\n    private static List<MainDoeuvre> MainDoeuvreList = new ArrayList<>();;\r\n    private static List<Materiau> MateriauList = new ArrayList<>();;\r\n\r\n    private static double pourcentageMargeBeneficiaire = 0.0;\r\n    private static double pourcentageTVA = 0.0;\r\n\r\n\r\n    public static void main(String[] args) {\r\n        ClientController clientController = initializeClientController();\r\n        ProjectController projectController = initializeProjectController();\r\n        MateriauController materiauController = initializeMateriauController();\r\n        MainDOeuvreController mainDoeuvreController = initializeMainDOeuvreController();\r\n\r\n        Scanner scanner = new Scanner(System.in);\r\n        int choix;\r\n\r\n        System.out.println(\"=== Bienvenue dans l'application de gestion des projets de rénovation de cuisines ===\");\r\n\r\n        do {\r\n            mainMenu();\r\n            System.out.println(\">>>>>>   Veuillez choisir une option:   <<<<<<\");\r\n            choix = scanner.nextInt();\r\n            scanner.nextLine();\r\n\r\n            switch (choix) {\r\n                case 1:\r\n                    handleNewProjectCreation(clientController, projectController, materiauController, mainDoeuvreController, scanner);\r\n                    break;\r\n                case 2:\r\n                    System.out.println(\"Affichage des projets existants\");\r\n                    break;\r\n                case 3:\r\n                    System.out.println(\"Calcul du coût d'un projet\");\r\n                    break;\r\n                case 4:\r\n                    System.out.println(\"Merci d'avoir utilisé notre application\");\r\n                    break;\r\n                default:\r\n                    System.out.println(\"Veuillez choisir une option valide\");\r\n                    break;\r\n            }\r\n        } while (choix != 4);\r\n    }\r\n\r\n    private static void handleNewProjectCreation(ClientController clientController, ProjectController projectController,\r\n                                                 MateriauController materiauController, MainDOeuvreController mainDoeuvreController,\r\n                                                 Scanner scanner) {\r\n        Optional<Client> OptionalClient = clientController.index();\r\n        if (OptionalClient.isPresent() && OptionalClient.get().getId() != 0) {\r\n            System.out.println(\"Souhaitez-vous continuer avec ce client ? (y/n) : \");\r\n            if (scanner.nextLine().equalsIgnoreCase(\"y\")) {\r\n                projet  = projectController.store(OptionalClient.get().getId());\r\n                if (projet.getId() != 0) {\r\n                    handleMateriauCreation(materiauController, scanner, projet.getId());\r\n                    handleMainDoeuvreCreation(mainDoeuvreController, scanner, projet.getId());\r\n                    handleClaculCoutTotale(scanner, new MateriauServiceImp(new MateriauRepositoryImp()), new MainDoeuvreServiceImp(new MainDoeuvreRepositoryImp()));\r\n                    System.out.println(\"--- Résultat du Calcul ---\\n\" +\r\n                            \"Nom du projet : \" + projet.getNom() + \"\\n\" +\r\n                            \"Client : \" + OptionalClient.get().getNom() + \"\\n\" +\r\n                            \"Adresse du chantier : \" + OptionalClient.get().getAddress() + \"\\n\" +\r\n                            \"Surface : \" + projet.getSurfaceCouisine() + \" m²\\n\" +\r\n                            \"--- Détail des Coûts ---\");\r\n                    System.out.println(\"1. Matériaux :\");\r\n                    MateriauList.forEach(materiau -> {\r\n                        System.out.println(\"Nom : \" + materiau.getNom()   + calculateCoutTotalMateriau(materiau) +\" ( quantité : \" + materiau.getQuantite() + \" coutUnitaire : \" + materiau.getCoutUnitaire() + \" coutTransport : \" + materiau.getCoutTransport() + \" coefficientQualite : \" + materiau.getCoefficientQualite()  +\")\");\r\n                    });\r\n                    System.out.println(\"Coût total des matériaux avant TVA : \" + MateriauList.stream().mapToDouble(materiau -> calculateCoutTotalMateriau(materiau)).sum());\r\n                    System.out.println(\"Coût total des matériaux avec TVA (\" + pourcentageTVA + \"%) : \" + MateriauList.stream().mapToDouble(materiau -> materiau.getTauxTVA()).sum());\r\n\r\n                    System.out.println(\"2. Main d'œuvre :\");\r\n\r\n                    MainDoeuvreList.forEach(mainDoeuvre -> {\r\n                        System.out.println(\"Nom : \" + mainDoeuvre.getNom() + calculateCoutTotalMainDoeuvre(mainDoeuvre) + \" ( tauxHoraire : \" + mainDoeuvre.getTauxHoraire() + \" heurTravail : \" + mainDoeuvre.getHeurTravail() + \" productiviteOuvrier : \" + mainDoeuvre.getProductiviteOuvrier() + \")\");\r\n                    });\r\n                    System.out.println(\"Coût total de la main d'œuvre avant TVA : \" + MainDoeuvreList.stream().mapToDouble(mainDoeuvre -> calculateCoutTotalMainDoeuvre(mainDoeuvre)).sum());\r\n                    System.out.println(\"Coût total de la main d'œuvre avec TVA (\" + pourcentageTVA + \"%) : \" + MainDoeuvreList.stream().mapToDouble(mainDoeuvre -> mainDoeuvre.getTauxTVA()).sum());\r\n\r\n                    double totalCoutMateriau = MateriauList.stream().mapToDouble(materiau -> calculateCoutTotalMateriau(materiau)).sum();\r\n                    double totalCoutMainDoeuvre = MainDoeuvreList.stream().mapToDouble(mainDoeuvre -> calculateCoutTotalMainDoeuvre(mainDoeuvre)).sum();\r\n                    double totalCoutAvantMarge = totalCoutMateriau + totalCoutMainDoeuvre;\r\n                    double margeBeneficiaire = totalCoutAvantMarge * pourcentageMargeBeneficiaire;\r\n                    double totalCoutApresMarge = totalCoutAvantMarge + margeBeneficiaire;\r\n\r\n                    System.out.println(\"3. Coût total avant marge : \" + totalCoutAvantMarge);\r\n                    System.out.println(\"4. Marge bénéficiaire : \" + margeBeneficiaire);\r\n                    projet.setCoutTotal(totalCoutAvantMarge);\r\n                    projet.setMargeBeneficiaire(margeBeneficiaire);\r\n\r\n                    System.out.println(\"5. Coût total après marge : \" + totalCoutApresMarge);\r\n\r\n                    System.out.println(\"--- Enregistrement du Devis ---\");\r\n                    System.out.println(\"Entrez la date d'émission du devis (format : jj/mm/aaaa) : \");\r\n                    Date dateEmission =  DBUtils.validateAndGetDate(scanner.nextLine());\r\n                    System.out.println(\"Entrez la date de validité du devis (format : jj/mm/aaaa) : \");\r\n                    Date dateValidite =  DBUtils.validateAndGetDate(scanner.nextLine());\r\n\r\n                    System.out.println(\"Souhaitez-vous enregistrer le devis ? (y/n) : \");\r\n                    String choixEnregistrementDevis = scanner.nextLine();\r\n                    Devis devis = new Devis();\r\n                    devis.setDateMission(dateEmission);\r\n                    devis.setDateValidite(dateValidite);\r\n                    devis.setMontantEstime(totalCoutApresMarge);\r\n                    if (choixEnregistrementDevis.equalsIgnoreCase(\"y\")) {\r\n                        devis.setAccepted(true);\r\n                        projet.setEtat(EtatProject.EN_COURS);\r\n                        System.out.println(\"Devis enregistré avec succès !\");\r\n                    }else{\r\n                        projet.setEtat(EtatProject.ANNULER);\r\n                        devis.setAccepted(false);\r\n                    }\r\n                    projectController.update(projet.getId(), projet);\r\n                    DevisService devisService = new DevisServiceImp(new DevisRepositoryImp());\r\n                    devisService.store(devis, projet.getId());\r\n                } else {\r\n                    System.out.println(\"Vous avez choisi de ne pas continuer avec ce client\");\r\n                }\r\n            }\r\n        }\r\n    }\r\n\r\n    private static void handleMateriauCreation(MateriauController materiauController, Scanner scanner, int idProjet) {\r\n        System.out.println(\"--- Ajout des matériaux ---\");\r\n        String choixContinuedCreation;\r\n        do {\r\n            materiau = materiauController.store(idProjet);\r\n            if (materiau.getId() != 0) {\r\n                System.out.println(\"Matériau ajouté avec succès !\");\r\n                System.out.println(\"Voulez-vous ajouter un autre matériau ? (y/n) : \");\r\n                MateriauList.add(materiau);\r\n                choixContinuedCreation = scanner.nextLine().toLowerCase();\r\n            } else {\r\n                choixContinuedCreation = \"n\";\r\n            }\r\n        } while (choixContinuedCreation.equals(\"y\"));\r\n    }\r\n\r\n    private static void handleMainDoeuvreCreation(MainDOeuvreController mainDoeuvreController, Scanner scanner, int idProjet) {\r\n        System.out.println(\"--- Ajout de la main d'œuvre ---\");\r\n        String choixContinuedCreation;\r\n        do {\r\n            mainDoeuvre = mainDoeuvreController.store(idProjet);\r\n            if (mainDoeuvre.getId() != 0) {\r\n                System.out.println(\"Main d'œuvre ajoutée avec succès !\");\r\n                MainDoeuvreList.add(mainDoeuvre);\r\n                System.out.println(\"Voulez-vous ajouter une autre main d'œuvre ? (y/n) : \");\r\n                choixContinuedCreation = scanner.nextLine().toLowerCase();\r\n            } else {\r\n                choixContinuedCreation = \"n\";\r\n            }\r\n        } while (choixContinuedCreation.equals(\"y\"));\r\n    }\r\n\r\n    private static void handleClaculCoutTotale(Scanner scanner, MateriauService materiauService, MainDoeuvreService mainDoeuvreService) {\r\n        System.out.println(\"--- Calcul du coût total ---\\n\");\r\n\r\n        System.out.println(\"Souhaitez-vous appliquer une TVA au projet ? (y/n) : \");\r\n        String choixApplicateTVA = scanner.nextLine();\r\n\r\n        if (choixApplicateTVA.equalsIgnoreCase(\"y\")) {\r\n            System.out.println(\"Entrez le pourcentage de TVA (%) : \");\r\n            pourcentageTVA = scanner.nextDouble();\r\n            scanner.nextLine();\r\n        }\r\n        System.out.println(\"Souhaitez-vous appliquerune marge bénéficiaire au projet ? (y/n) : y \");\r\n        String choixApplicateMargeBeneficiaire = scanner.nextLine();\r\n\r\n        if (choixApplicateMargeBeneficiaire.equalsIgnoreCase(\"y\")) {\r\n            System.out.println(\"Entrez le pourcentage de marge bénéficiaire (%) : \");\r\n            pourcentageMargeBeneficiaire = scanner.nextDouble();\r\n            scanner.nextLine();\r\n        }\r\n\r\n        System.out.println(\"Calcul du coût en cours...\\n\");\r\n\r\n        MateriauList.forEach(materiau -> {\r\n            double CoutTotalMateriau = calculateCoutTotalMateriau(materiau);\r\n            double TauxTVA = 0.0;\r\n            if(pourcentageTVA != 0.0) {\r\n                TauxTVA = CoutTotalMateriau + CoutTotalMateriau * pourcentageTVA / 100;\r\n                materiau.setTauxTVA(TauxTVA);\r\n                materiauService.update(materiau.getId(), materiau);\r\n            }\r\n\r\n        });\r\n        double coutTotalMateriaux = MateriauList.stream()\r\n                .mapToDouble(materiau -> materiau.getTauxTVA())\r\n                .sum();\r\n\r\n        MainDoeuvreList.forEach(mainDoeuvre -> {\r\n            double coutTotalMainDoeuvre = calculateCoutTotalMainDoeuvre(mainDoeuvre);\r\n            double TauxTVA = 0.0;\r\n            if(pourcentageTVA != 0.0) {\r\n                TauxTVA = coutTotalMainDoeuvre + coutTotalMainDoeuvre * pourcentageTVA / 100;\r\n                mainDoeuvre.setTauxTVA(TauxTVA);\r\n                mainDoeuvreService.update(mainDoeuvre.getId(), mainDoeuvre);\r\n            }\r\n            mainDoeuvre.setTauxTVA(coutTotalMainDoeuvre);\r\n        });\r\n\r\n    }\r\n\r\n    public static void mainMenu() {\r\n        System.out.println(\"==================================== Menu Principal =================================\\n\" +\r\n                \"1. Créer un nouveau projet :\\n\" +\r\n                \"2. Afficher les projets existants :\\n\" +\r\n                \"3. Calculer le coût d'un projet :\\n\" +\r\n                \"4. Quitter :\\n\" +\r\n                \"=====================================================================================\\n\");\r\n    }\r\n\r\n    private static ClientController initializeClientController() {\r\n        ClientRepository clientRepository = new ClientRepositoryImp();\r\n        ClientService clientService = new ClientServiceImp(clientRepository);\r\n        return new ClientController(clientService);\r\n    }\r\n\r\n    private static ProjectController initializeProjectController() {\r\n        ProjectRepositoryImp projectRepository = new ProjectRepositoryImp();\r\n        ProjectService projectService = new ProjectServiceImp(projectRepository);\r\n        return new ProjectController(projectService);\r\n    }\r\n\r\n    private static MateriauController initializeMateriauController() {\r\n        MateriauRepository materiauRepository = new MateriauRepositoryImp();\r\n        MateriauService materiauService = new MateriauServiceImp(materiauRepository);\r\n        return new MateriauController(materiauService);\r\n    }\r\n\r\n    private static MainDOeuvreController initializeMainDOeuvreController() {\r\n        MainDoeuvreRepository mainDoeuvreRepository = new MainDoeuvreRepositoryImp();\r\n        MainDoeuvreService mainDoeuvreService = new MainDoeuvreServiceImp(mainDoeuvreRepository);\r\n        return new MainDOeuvreController(mainDoeuvreService);\r\n    }\r\n\r\n    private static double calculateCoutTotalMateriau(Materiau materiau) {\r\n        double coutTotalMateriau = materiau.getCoutUnitaire() * materiau.getQuantite() * materiau.getCoefficientQualite() + materiau.getCoutTransport() ;\r\n        return coutTotalMateriau;\r\n    }\r\n\r\n    private static double calculateCoutTotalMainDoeuvre(MainDoeuvre mainDoeuvre) {\r\n        double coutTotalMainDoeuvre = mainDoeuvre.getTauxHoraire() * mainDoeuvre.getHeurTravail() * mainDoeuvre.getProductiviteOuvrier();\r\n        return coutTotalMainDoeuvre;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/BatiCouisine/Main.java b/src/com/BatiCouisine/Main.java
+--- a/src/com/BatiCouisine/Main.java	(revision 1a1fc7c7e356c75bb71400dbce365603f6dc9d58)
++++ b/src/com/BatiCouisine/Main.java	(date 1727166036508)
+@@ -7,6 +7,7 @@
+ import com.BatiCouisine.service.*;
+ import com.BatiCouisine.service.Implementation.*;
+ import com.BatiCouisine.util.DBUtils;
++import com.BatiCouisine.util.ValidationUtils;
+ 
+ import java.util.*;
+ 
+@@ -41,20 +42,18 @@
+         do {
+             mainMenu();
+             System.out.println(">>>>>>   Veuillez choisir une option:   <<<<<<");
+-            choix = scanner.nextInt();
+-            scanner.nextLine();
++
++            choix = ValidationUtils.getValidInput(scanner);
++
+ 
+             switch (choix) {
+                 case 1:
+                     handleNewProjectCreation(clientController, projectController, materiauController, mainDoeuvreController, scanner);
+                     break;
+-                case 2:
+-                    System.out.println("Affichage des projets existants");
++                case 2: clientController.findAll();
++
+                     break;
+                 case 3:
+-                    System.out.println("Calcul du coût d'un projet");
+-                    break;
+-                case 4:
+                     System.out.println("Merci d'avoir utilisé notre application");
+                     break;
+                 default:
+@@ -64,6 +63,14 @@
+         } while (choix != 4);
+     }
+ 
++    public static void mainMenu() {
++        System.out.println("==================================== Menu Principal =================================\n" +
++                "1. Créer un nouveau projet :\n" +
++                "2. Afficher les projets existants :\n" +
++                "3. Quitter :\n" +
++                "=====================================================================================\n");
++    }
++
+     private static void handleNewProjectCreation(ClientController clientController, ProjectController projectController,
+                                                  MateriauController materiauController, MainDOeuvreController mainDoeuvreController,
+                                                  Scanner scanner) {
+@@ -127,8 +134,9 @@
+                         projet.setEtat(EtatProject.EN_COURS);
+                         System.out.println("Devis enregistré avec succès !");
+                     }else{
+-                        projet.setEtat(EtatProject.ANNULER);
++                        projet.setEtat(EtatProject.ANNULE);
+                         devis.setAccepted(false);
++                        System.out.println("Devis refusé !");
+                     }
+                     projectController.update(projet.getId(), projet);
+                     DevisService devisService = new DevisServiceImp(new DevisRepositoryImp());
+@@ -221,14 +229,7 @@
+ 
+     }
+ 
+-    public static void mainMenu() {
+-        System.out.println("==================================== Menu Principal =================================\n" +
+-                "1. Créer un nouveau projet :\n" +
+-                "2. Afficher les projets existants :\n" +
+-                "3. Calculer le coût d'un projet :\n" +
+-                "4. Quitter :\n" +
+-                "=====================================================================================\n");
+-    }
++
+ 
+     private static ClientController initializeClientController() {
+         ClientRepository clientRepository = new ClientRepositoryImp();
+Index: src/com/BatiCouisine/controller/ProjectController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.BatiCouisine.controller;\r\n\r\nimport com.BatiCouisine.entities.EtatProject;\r\nimport com.BatiCouisine.entities.Projet;\r\nimport com.BatiCouisine.service.ProjectService;\r\n\r\nimport java.util.Scanner;\r\n\r\npublic class ProjectController {\r\n    private ProjectService projectService;\r\n\r\n\r\n\r\n    public ProjectController(ProjectService projectService) {\r\n        this.projectService = projectService;\r\n    }\r\n\r\n    public Projet store(int idClient) {\r\n        Scanner scanner = new Scanner(System.in);\r\n        System.out.println(\"Entrer le nom du projet : \");\r\n        String nom = scanner.nextLine();\r\n        System.out.println(\"Entrer la surface de la cuisine : \");\r\n        double surfaceCuisine = scanner.nextDouble();\r\n        Projet projet = new Projet(0, nom, 0, 0, EtatProject.EN_COURS, surfaceCuisine);\r\n        int idProjet = projectService.store(projet, idClient);\r\n        projet.setId(idProjet);\r\n        return projet;\r\n    }\r\n\r\n    public void findById(int id) {\r\n        projectService.findById(id);\r\n    }\r\n\r\n    public void update(int id, Projet projet) {\r\n        projectService.update(id, projet);\r\n    }\r\n\r\n    public void destroy(int id) {\r\n        projectService.destroy(id);\r\n    }\r\n\r\n//    public void findAll() {\r\n//        projectService.findAll();\r\n//    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/BatiCouisine/controller/ProjectController.java b/src/com/BatiCouisine/controller/ProjectController.java
+--- a/src/com/BatiCouisine/controller/ProjectController.java	(revision 1a1fc7c7e356c75bb71400dbce365603f6dc9d58)
++++ b/src/com/BatiCouisine/controller/ProjectController.java	(date 1727166036516)
+@@ -4,6 +4,7 @@
+ import com.BatiCouisine.entities.Projet;
+ import com.BatiCouisine.service.ProjectService;
+ 
++import java.util.HashMap;
+ import java.util.Scanner;
+ 
+ public class ProjectController {
+@@ -39,8 +40,18 @@
+         projectService.destroy(id);
+     }
+ 
+-//    public void findAll() {
+-//        projectService.findAll();
+-//    }
++    public void findAll() {
++        HashMap<String, Projet>  projetHashMap= projectService.retrieveAll();
++        for (Projet projet : projetHashMap.values()) {
++            System.out.println("_________________________________________________________" +
++                    "\nId : " + projet.getId() +
++                    "\nNom : " + projet.getNom() +
++                    "\nMarge bénéficiaire : " + projet.getMargeBeneficiaire() +
++                    "\nCout total : " + projet.getCoutTotal() +
++                    "\nEtat : " + projet.getEtat() +
++                    "\nSurface cuisine : " + projet.getSurfaceCouisine() +
++                    "\n_________________________________________________________");
++        }
++    }
+ 
+ }
+Index: src/com/BatiCouisine/entities/EtatProject.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.BatiCouisine.entities;\r\n\r\npublic enum EtatProject {\r\n\r\n    EN_COURS,\r\n    TERMINER,\r\n    ANNULER\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/BatiCouisine/entities/EtatProject.java b/src/com/BatiCouisine/entities/EtatProject.java
+--- a/src/com/BatiCouisine/entities/EtatProject.java	(revision 1a1fc7c7e356c75bb71400dbce365603f6dc9d58)
++++ b/src/com/BatiCouisine/entities/EtatProject.java	(date 1727166036521)
+@@ -4,5 +4,5 @@
+ 
+     EN_COURS,
+     TERMINER,
+-    ANNULER
++    ANNULE
+ }

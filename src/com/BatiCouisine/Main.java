@@ -7,6 +7,7 @@ import com.BatiCouisine.repository.implementation.*;
 import com.BatiCouisine.service.*;
 import com.BatiCouisine.service.Implementation.*;
 import com.BatiCouisine.util.DBUtils;
+import com.BatiCouisine.util.ValidationUtils;
 
 import java.util.*;
 
@@ -41,20 +42,18 @@ public class Main {
         do {
             mainMenu();
             System.out.println(">>>>>>   Veuillez choisir une option:   <<<<<<");
-            choix = scanner.nextInt();
-            scanner.nextLine();
+
+            choix = ValidationUtils.getValidInput(scanner);
+
 
             switch (choix) {
                 case 1:
                     handleNewProjectCreation(clientController, projectController, materiauController, mainDoeuvreController, scanner);
                     break;
-                case 2:
-                    System.out.println("Affichage des projets existants");
+                case 2: projectController.findAll();
+
                     break;
                 case 3:
-                    System.out.println("Calcul du coût d'un projet");
-                    break;
-                case 4:
                     System.out.println("Merci d'avoir utilisé notre application");
                     break;
                 default:
@@ -64,13 +63,25 @@ public class Main {
         } while (choix != 4);
     }
 
+    public static void mainMenu() {
+        System.out.println("==================================== Menu Principal =================================\n" +
+                "1. Créer un nouveau projet :\n" +
+                "2. Afficher les projets existants :\n" +
+                "3. Quitter :\n" +
+                "=====================================================================================\n");
+    }
+
     private static void handleNewProjectCreation(ClientController clientController, ProjectController projectController,
                                                  MateriauController materiauController, MainDOeuvreController mainDoeuvreController,
                                                  Scanner scanner) {
         Optional<Client> OptionalClient = clientController.index();
         if (OptionalClient.isPresent() && OptionalClient.get().getId() != 0) {
             System.out.println("Souhaitez-vous continuer avec ce client ? (y/n) : ");
-            if (scanner.nextLine().equalsIgnoreCase("y")) {
+            scanner.nextLine();
+            String response = scanner.nextLine();
+
+
+            if (response.equalsIgnoreCase("y")) {
                 projet  = projectController.store(OptionalClient.get().getId());
                 if (projet.getId() != 0) {
                     handleMateriauCreation(materiauController, scanner, projet.getId());
@@ -127,8 +138,9 @@ public class Main {
                         projet.setEtat(EtatProject.EN_COURS);
                         System.out.println("Devis enregistré avec succès !");
                     }else{
-                        projet.setEtat(EtatProject.ANNULER);
+                        projet.setEtat(EtatProject.ANNULE);
                         devis.setAccepted(false);
+                        System.out.println("Devis refusé !");
                     }
                     projectController.update(projet.getId(), projet);
                     DevisService devisService = new DevisServiceImp(new DevisRepositoryImp());
@@ -221,14 +233,7 @@ public class Main {
 
     }
 
-    public static void mainMenu() {
-        System.out.println("==================================== Menu Principal =================================\n" +
-                "1. Créer un nouveau projet :\n" +
-                "2. Afficher les projets existants :\n" +
-                "3. Calculer le coût d'un projet :\n" +
-                "4. Quitter :\n" +
-                "=====================================================================================\n");
-    }
+
 
     private static ClientController initializeClientController() {
         ClientRepository clientRepository = new ClientRepositoryImp();
