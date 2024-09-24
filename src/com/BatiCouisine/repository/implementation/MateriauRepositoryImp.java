@@ -19,8 +19,8 @@ public class MateriauRepositoryImp implements MateriauRepository {
         connection = DBConnection.getConnectionInstance().getConnection();
     }
 
-    public void store(Materiau materiau, int idProjt){
-        String sqlQuery = "INSERT INTO Materiau (nom, typeComposant, taux_tva, coutunitaire, quantite, couttransport, coefficientqualite, id_Projt) VALUES (?, ? ,?, ? ,?, ? ,?, ? )";
+    public int store(Materiau materiau, int idProjt){
+        String sqlQuery = "INSERT INTO Materiau (nom, typeComposant, taux_tva, coutunitaire, quantite, couttransport, coefficientqualite, id_Projet) VALUES (?, ? ,?, ? ,?, ? ,?, ? )";
         PreparedStatement preparedStatement = null;
         ResultSet generatedKey = null;
 
@@ -50,6 +50,7 @@ public class MateriauRepositoryImp implements MateriauRepository {
         }finally {
             DBUtils.closeResources(generatedKey, preparedStatement);
         }
+        return materiau.getId();
     };
 
     public Optional<Materiau> findById(int id){

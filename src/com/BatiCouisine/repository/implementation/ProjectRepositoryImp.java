@@ -20,8 +20,8 @@ public class ProjectRepositoryImp implements ProjectRepository {
         this.connection = DBConnection.getConnectionInstance().getConnection();
     }
 
-    public void store(Projet project, int idClient) {
-        String sqlQuery = "INSERT INTO project (nom, margebeneficiaire, couttotal, etat, surfacecouisine, id_client) VALUES (?, ?, ?, ?, ?, ?)";
+    public int store(Projet project, int idClient) {
+        String sqlQuery = "INSERT INTO projet (nom, margebeneficiaire, couttotal, etat, surfacecouisine, id_client) VALUES (?, ?, ?,  ?::etatprojet, ?, ?)";
         PreparedStatement preparedStatement = null;
         ResultSet generatedKey = null;
 
@@ -30,7 +30,7 @@ public class ProjectRepositoryImp implements ProjectRepository {
             preparedStatement.setString(1, project.getNom());
             preparedStatement.setDouble(2, project.getMargeBeneficiaire());
             preparedStatement.setDouble(3, project.getCoutTotal());
-            preparedStatement.setObject(4, project.getEtat());
+            preparedStatement.setString(4, project.getEtat().toString());
             preparedStatement.setDouble(5, project.getSurfaceCouisine());
             preparedStatement.setInt(6, idClient);
             int affectedRow = preparedStatement.executeUpdate();
@@ -40,6 +40,7 @@ public class ProjectRepositoryImp implements ProjectRepository {
             generatedKey = preparedStatement.getGeneratedKeys();
             if (generatedKey.next()) {
                 project.setId(generatedKey.getInt(1));
+
             } else {
                 throw new Exception("Erreur lors de l'insertion du projet");
             }
@@ -49,11 +50,12 @@ public class ProjectRepositoryImp implements ProjectRepository {
         }finally {
             DBUtils.closeResources(generatedKey, preparedStatement);
         }
+        return project.getId();
     }
 
 
     public void update(int id, Projet project) {
-        String sqlQuery = "UPDATE project SET nom = ?, margebeneficiaire = ?, couttotal = ?, etat = ?, surfacecouisine = ? WHERE id = ?";
+        String sqlQuery = "UPDATE projet SET nom = ?, margebeneficiaire = ?, couttotal = ?, etat = ?::etatprojet, surfacecouisine = ? WHERE id = ?";
         PreparedStatement preparedStatement = null;
 
         try {
@@ -61,7 +63,7 @@ public class ProjectRepositoryImp implements ProjectRepository {
             preparedStatement.setString(1, project.getNom());
             preparedStatement.setDouble(2, project.getMargeBeneficiaire());
             preparedStatement.setDouble(3, project.getCoutTotal());
-            preparedStatement.setObject(4, project.getEtat());
+            preparedStatement.setString(4, project.getEtat().toString());
             preparedStatement.setDouble(5, project.getSurfaceCouisine());
             preparedStatement.setInt(6, id);
             int affectedRow = preparedStatement.executeUpdate();

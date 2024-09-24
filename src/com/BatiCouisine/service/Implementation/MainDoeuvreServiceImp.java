@@ -15,17 +15,17 @@ public class MainDoeuvreServiceImp implements MainDoeuvreService {
         this.mainDoeuvreRepository = mainDoeuvreRepository;
     }
 
-    public boolean store(MainDoeuvre mainDoeuvre, int idProjt) {
+    public int store(MainDoeuvre mainDoeuvre, int idProjt) {
         if (mainDoeuvre == null) {
             throw new IllegalArgumentException("MainDoeuvre est null");
         }
 
         try {
-            mainDoeuvreRepository.store(mainDoeuvre, idProjt);
-            return true;
+            return mainDoeuvreRepository.store(mainDoeuvre, idProjt);
+
         } catch (Exception e) {
             System.err.println("Erreur pendant la creation du Main d'oeuvre: " + e.getMessage());
-            return false;
+            return 0;
         }
     }
 

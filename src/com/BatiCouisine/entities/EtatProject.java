@@ -4,5 +4,5 @@ public enum EtatProject {
 
     EN_COURS,
     TERMINER,
-    ANNULER
+    ANNULE
 }
