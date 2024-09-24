@@ -55,12 +55,6 @@ Copy code
     java -cp build/classes/java/main com.BatiCouisine.Main
     ```
 
-## Future Enhancements
-
-- Implement more advanced error handling and validation logic.
-- Expand the database to support more complex renovation workflows.
-- Improve user input handling and user interfaces.
-
 ## License
 
 This project is licensed under the MIT License.
